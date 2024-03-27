@@ -1,21 +1,19 @@
-import './App.css';
-import BoardConfigForm from './BoardConfigForm';
-import SnakeBoard from './Snake/Board';
-import { GameSessionCtxProvider } from './context/game/GameSessionContext';
-import { SnakeCtxProvider } from './context/snake/SnakeContext';
+import './App.css'
+import BoardConfigForm from './components/BoardConfigForm'
+import SnakeBoard from './Snake/SnakeBoard'
+import { GameSessionCtxProvider } from './context/game/GameSessionContext'
+import GameOverDialog from './components/GameOverDialog'
 
-function App() {
-
+function App(): JSX.Element {
   return (
     <>
       <GameSessionCtxProvider>
-        <SnakeCtxProvider>
-          <BoardConfigForm />
-          <SnakeBoard />
-        </SnakeCtxProvider>
+        <BoardConfigForm />
+        <SnakeBoard />
+        <GameOverDialog />
       </GameSessionCtxProvider>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

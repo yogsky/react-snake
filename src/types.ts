@@ -1,4 +1,3 @@
-
 export enum Direction {
   'UP',
   'DOWN',
@@ -6,4 +5,4 @@ export enum Direction {
   'RIGHT'
 }
 
-export type Coordinate = [number, number];
+export type Coordinate = [number, number]
