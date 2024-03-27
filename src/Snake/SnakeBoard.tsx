@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { useGameSessionCtx } from '../context/game/GameSessionContext'
 import { SnakeCtxProvider } from '../context/snake/SnakeContext'
 import { Cell } from './Cell/Cell'
-import { useGameLoop } from '../hooks/gameloop/useGameLoop'
 
 interface BoardProps {
   m: number
