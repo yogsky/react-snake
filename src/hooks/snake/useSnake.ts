@@ -66,18 +66,20 @@ export default function useSnake(): SnakeHook {
   }, [direction])
 
   const tick = useCallback(() => {
-    directionChangedRef.current = false // Reset the direction change flag at the start of each tick
-
     const [currRow, currCol] = snakeRef.current.at(-1) ?? [0, 0]
     const [deltaRow, deltaCol] = DIRECTIONS[directionRef.current]
     const [nextRow, nextCol] = getNextCoords([currRow + deltaRow, currCol + deltaCol], rows, cols, directionRef.current)
     const nextCoord: Coordinate = [nextRow, nextCol]
     const nextCoordsKey = toCoordsKey(nextCoord)
+
+    directionChangedRef.current = false
+
     if (snakeSetRef.current.has(nextCoordsKey)) {
       setIsGameOver(true)
       stopGameLoop()
       return
     }
+
     const newSnake = [...snakeRef.current]
 
     if (areCoordsSame([nextRow, nextCol], foodLocationRef.current)) {
@@ -103,7 +105,7 @@ export default function useSnake(): SnakeHook {
       const newDirection = ArrowKeyToDirection[arrowKey]
       if (!isGameOver && newDirection !== undefined && !directionChangedRef.current) {
         setDirection(directionHandler(newDirection))
-        directionChangedRef.current = true // Set the flag to indicate the direction has changed
+        directionChangedRef.current = true
       }
     }
     document.addEventListener('keydown', handleKeyDown)
