@@ -46,6 +46,7 @@ export default function useSnake(): SnakeHook {
   const snakeRef = useRef(snake)
   const foodLocationRef = useRef(foodLocation)
   const directionRef = useRef(direction)
+  const directionChangedRef = useRef(false)
   const snakeSetRef = useRef(new Set(snakeRef.current.map(toCoordsKey)))
 
   function isCoordsInSnake([rowIndex, colIndex]: Coordinate): boolean {
@@ -65,6 +66,8 @@ export default function useSnake(): SnakeHook {
   }, [direction])
 
   const tick = useCallback(() => {
+    directionChangedRef.current = false // Reset the direction change flag at the start of each tick
+
     const [currRow, currCol] = snakeRef.current.at(-1) ?? [0, 0]
     const [deltaRow, deltaCol] = DIRECTIONS[directionRef.current]
     const [nextRow, nextCol] = getNextCoords([currRow + deltaRow, currCol + deltaCol], rows, cols, directionRef.current)
@@ -97,9 +100,10 @@ export default function useSnake(): SnakeHook {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent): void => {
       const arrowKey = event.key as keyof typeof ArrowKeyToDirection
-      const direction = ArrowKeyToDirection[arrowKey]
-      if (!isGameOver && direction !== undefined) {
-        setDirection(directionHandler(direction))
+      const newDirection = ArrowKeyToDirection[arrowKey]
+      if (!isGameOver && newDirection !== undefined && !directionChangedRef.current) {
+        setDirection(directionHandler(newDirection))
+        directionChangedRef.current = true // Set the flag to indicate the direction has changed
       }
     }
     document.addEventListener('keydown', handleKeyDown)
@@ -107,6 +111,7 @@ export default function useSnake(): SnakeHook {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [isGameOver])
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent): void => {
       const arrowKey = event.key as keyof typeof ArrowKeyToDirection
